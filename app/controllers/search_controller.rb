@@ -51,11 +51,8 @@ class SearchController < ApplicationController
         apiresults << result[2]
     end 
 
-  apiresults
-end
-
-
-  
+    apiresults
+  end
 end
 
 

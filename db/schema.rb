@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2022_07_20_100700) do
     t.text "text"
     t.integer "aya_number"
     t.integer "surah_id"
+    t.integer "chapteer_id"
     t.integer "chapter_id"
   end
 
@@ -33,28 +34,15 @@ ActiveRecord::Schema.define(version: 2022_07_20_100700) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "surahs", force: :cascade do |t|
-    t.string "name"
-    t.integer "surah_id"
-    t.string "place"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "suras", force: :cascade do |t|
-    t.integer "number"
-    t.string "name"
-    t.string "location"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "tafseers", force: :cascade do |t|
     t.string "tafser"
+    t.string "ayanumber"
     t.integer "chapter_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "aya_number"
     t.string "aya_order"
+    t.string "chapter_id"
   end
 
 end

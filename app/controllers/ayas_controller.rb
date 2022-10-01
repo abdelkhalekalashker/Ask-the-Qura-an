@@ -3,7 +3,7 @@ class AyasController < ApplicationController
 
   # GET /ayas or /ayas.json
   def index
-    @ayas = Aya
+    @ayas = Aya.all
   end
 
   # GET /ayas/1 or /ayas/1.json
@@ -68,6 +68,6 @@ class AyasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def aya_params
-      params.require(:aya).permit(:content, :number)
+      params.require(:aya).permit(:content, :aya_number, :text)
     end
 end

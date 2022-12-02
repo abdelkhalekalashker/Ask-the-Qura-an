@@ -5,7 +5,29 @@ class SearchController < ApplicationController
   require 'json'
     def index    
       if params[:lexical_type] 
-        words = params[:q][:content_or_text_cont] 
+        words = params[:q][:content_or_text] 
+        if words.blank?
+          redirect_to root_path
+          @counter = 0
+        else
+          @ayas= Aya.where("content LIKE ? ","%#{words}%")
+          #--------------------------------------
+
+            # respond_to do |format|
+            #   format.turbo_stream do 
+            #     render turbo_stream: turbo_stream.update
+            #   end
+            # end
+
+          #----------------------------------
+          @counter = @ayas.count
+          @pagy, @ayas = pagy(@ayas,items:12)
+
+        end
+      elsif params[:semantic_type]   
+          
+        # --------------when the AI model is down-------------
+        words = params[:q][:content_or_text] 
         if words.blank?
           redirect_to root_path
           @counter = 0
@@ -13,17 +35,22 @@ class SearchController < ApplicationController
           @ayas= Aya.where("content LIKE ?","%" + words + "%")
           @counter = @ayas.count
           @pagy, @ayas = pagy(@ayas,items:12)
-
         end
-      elsif params[:semantic_type]   
-          words = params[:q][:content_or_text_cont]
-          verses = find_verse(words)
-          @ayas = []
-          verses.each do |verse|
-            @ayas << Aya.find(verse+1)
-          end
-          @ayas = @ayas
-          @counter = @ayas.count
+        # --------------when the AI model is down-------------
+
+
+        # --------------when the AI model is up-------------
+
+            # words = params[:q][:content_or_text]
+            # verses = find_verse(words)
+            # @ayas = []
+            # verses.each do |verse|
+            #   @ayas << Aya.find(verse+1)
+            # end
+            # @ayas = @ayas
+            # @counter = @ayas.count
+        # --------------when the AI model is up-------------
+
       else  
         nil 
       end 

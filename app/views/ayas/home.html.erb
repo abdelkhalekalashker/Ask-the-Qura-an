@@ -25,7 +25,7 @@
                 <%= image_tag 'quran.png',  class: 'center-logo' %>
 
                 <%=search_form_for(@query , url: search_path , method: :get ) do |f|  %> 
-                    <%= f.search_field :content_or_text_cont , placeholder: "عن ماذا تبحث!..", class:"searchbar" %>
+                    <%= f.search_field :content_or_text , placeholder: "عن ماذا تبحث!..", class:"searchbar" %>
                     <%= f.submit "semantic", name: "semantic_type", value: "بحث بالمعنى", class:"btn btn-dark" %>
                     <%= f.submit "lexical", name: "lexical_type", value: "بحث باللفظ", class:"btn btn-dark" %>
                      

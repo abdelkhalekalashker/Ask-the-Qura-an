@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ASK-THE-QURA-AN
+      POSTGRES_DB: ASK-THE-QURA-AN_production
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+      # - ./run/postgresql/:/mayapp/run/postgresql/
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ASK-THE-QURA-AN
+      POSTGRES_DB: ASK-THE-QURA-AN_production
+      POSTGRESS_HOST: db
+      POSTGRESS_PORT: '5432'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - migration
+    command: ["rails", "server", "-b", "0.0.0.0"]
+    tty: true
+    stdin_open: true
+  migration:
+    build: .
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+      # - ./run/postgresql/:/mayapp/run/postgresql/
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ASK-THE-QURA-AN
+      POSTGRES_DB: ASK-THE-QURA-AN_production
+      POSTGRESS_HOST: db
+      POSTGRESS_PORT: '5432'
+    command: ["rails", "db:migrate"]
+    depends_on:
+      - db
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx-Dockerfile
+      args:
+        RAILS_ENV: $RAILS_ENV
+
+    depends_on:
+      - web
+
+    ports:
+      - 80:80
